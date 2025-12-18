@@ -23,6 +23,7 @@ import Toast from '../components/Toast';
 import QuantityInput from '../components/QuantityInput';
 import ConfirmDialog from '../components/ConfirmDialog';
 import SortFilterBar, { SortOption, FilterOption } from '../components/SortFilterBar';
+import SearchBar from '../components/SearchBar';
 
 const ShoppingListScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ const ShoppingListScreen: React.FC = () => {
   const [itemToDelete, setItemToDelete] = useState<{ id: string; name: string } | null>(null);
   const [sortOption, setSortOption] = useState<SortOption>('date');
   const [filterOption, setFilterOption] = useState<FilterOption>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     loadItems();
@@ -209,9 +211,22 @@ const ShoppingListScreen: React.FC = () => {
     }
   };
 
+  const searchItems = (itemsToSearch: ShoppingItem[], query: string): ShoppingItem[] => {
+    if (!query.trim()) {
+      return itemsToSearch;
+    }
+    const lowerQuery = query.toLowerCase().trim();
+    return itemsToSearch.filter(item =>
+      item.name.toLowerCase().includes(lowerQuery)
+    );
+  };
+
   const getDisplayedItems = (): ShoppingItem[] => {
-    const filtered = filterItems(items, filterOption);
-    return sortItems(filtered, sortOption);
+    let result = items;
+    result = searchItems(result, searchQuery);
+    result = filterItems(result, filterOption);
+    result = sortItems(result, sortOption);
+    return result;
   };
 
   const renderItem: ListRenderItem<ShoppingItem> = ({ item }) => (
@@ -259,6 +274,14 @@ const ShoppingListScreen: React.FC = () => {
           <ErrorMessage
             message={error}
             onDismiss={() => dispatch(clearError())}
+          />
+        )}
+
+        {items.length > 0 && (
+          <SearchBar
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onClear={() => setSearchQuery('')}
           />
         )}
 
