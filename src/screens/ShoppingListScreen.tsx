@@ -297,9 +297,18 @@ const ShoppingListScreen: React.FC = () => {
           <Text style={styles.title} accessible={true} accessibilityRole="header">
             Shopping List
           </Text>
-          <Text style={styles.subtitle} accessible={true}>
-            {items.length} {items.length === 1 ? 'item' : 'items'}
-          </Text>
+          <View style={styles.headerInfo}>
+            <Text style={styles.subtitle} accessible={true} accessibilityLabel={`Total items: ${items.length}`}>
+              {items.length} {items.length === 1 ? 'item' : 'items'}
+            </Text>
+            {items.length > 0 && (
+              <View style={styles.countBadge}>
+                <Text style={styles.countBadgeText} accessible={true} accessibilityLabel={`${items.filter(item => !item.purchased).length} items remaining`}>
+                  {items.filter(item => !item.purchased).length} remaining
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
 
         {error && (
@@ -437,11 +446,30 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: 'bold',
     color: '#333',
-    marginBottom: 4,
+    marginBottom: 8,
+  },
+  headerInfo: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   subtitle: {
     fontSize: 16,
     color: '#666',
+    fontWeight: '500',
+  },
+  countBadge: {
+    backgroundColor: '#E3F2FD',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+    marginLeft: 8,
+  },
+  countBadgeText: {
+    fontSize: 14,
+    color: '#1976D2',
+    fontWeight: '600',
   },
   listContent: {
     flexGrow: 1,
