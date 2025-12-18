@@ -10,7 +10,7 @@ interface ShoppingCartIconProps {
 const ShoppingCartIcon: React.FC<ShoppingCartIconProps> = ({ 
   width = 64, 
   height = 64, 
-  color = '#2D1B3D' 
+  color = '#FFFFFF' 
 }) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">

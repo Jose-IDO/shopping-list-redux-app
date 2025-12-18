@@ -10,7 +10,7 @@ interface CloseIconProps {
 const CloseIcon: React.FC<CloseIconProps> = ({ 
   width = 20, 
   height = 20, 
-  color = '#000000' 
+  color = '#333333' 
 }) => {
   return (
     <Svg width={width} height={height} viewBox="0 0 24 24" fill="none">

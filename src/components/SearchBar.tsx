@@ -36,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           accessibilityRole="button"
           accessibilityLabel="Clear search"
         >
-          <CloseIcon width={18} height={18} color={colors.textTertiary} />
+          <CloseIcon width={18} height={18} color={colors.textSecondary} />
         </TouchableOpacity>
       )}
     </View>

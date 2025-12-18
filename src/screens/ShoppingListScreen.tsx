@@ -277,7 +277,7 @@ const ShoppingListScreen: React.FC = () => {
 
     return (
       <View style={styles.emptyContainer}>
-        <ShoppingCartIcon width={80} height={80} color={colors.purple} />
+        <ShoppingCartIcon width={80} height={80} color={colors.textWhite} />
         <Text style={styles.emptyText}>Your shopping list is empty</Text>
         <Text style={styles.emptySubtext}>
           Start adding items to your list by tapping the button below

@@ -43,7 +43,7 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
           accessibilityRole="button"
           accessibilityLabel="Decrease quantity"
         >
-          <MinusIcon width={20} height={20} color={colors.purple} />
+          <MinusIcon width={20} height={20} color={colors.text} />
         </TouchableOpacity>
         <View style={styles.valueContainer}>
           <Text style={styles.value}>{value}</Text>
@@ -56,7 +56,7 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
           accessibilityRole="button"
           accessibilityLabel="Increase quantity"
         >
-          <PlusIcon width={20} height={20} color={colors.purple} />
+          <PlusIcon width={20} height={20} color={colors.text} />
         </TouchableOpacity>
       </View>
     </View>
