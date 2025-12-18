@@ -51,13 +51,18 @@ const ShoppingListScreen: React.FC = () => {
   const loadItems = async (): Promise<void> => {
     try {
       dispatch(setLoading(true));
+      dispatch(clearError());
       const savedItems = await loadItemsFromStorage();
       dispatch(setItems(savedItems));
       dispatch(setLoading(false));
     } catch (error) {
-      dispatch(setError('Failed to load shopping list'));
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Failed to load shopping list';
+      dispatch(setError(errorMessage));
       dispatch(setLoading(false));
-      showToast('Failed to load shopping list', 'error');
+      showToast('Unable to load your shopping list. Starting with an empty list.', 'error');
+      dispatch(setItems([]));
     }
   };
 
@@ -65,8 +70,11 @@ const ShoppingListScreen: React.FC = () => {
     try {
       await saveItemsToStorage(items);
     } catch (error) {
-      dispatch(setError('Failed to save shopping list'));
-      showToast('Failed to save shopping list', 'error');
+      const errorMessage = error instanceof Error 
+        ? error.message 
+        : 'Failed to save shopping list';
+      dispatch(setError(errorMessage));
+      showToast('Unable to save changes. Your data may not persist.', 'error');
     }
   };
 
