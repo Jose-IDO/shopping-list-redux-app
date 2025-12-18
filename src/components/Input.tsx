@@ -1,5 +1,6 @@
 import React from 'react';
 import { TextInput, View, Text, StyleSheet, ViewStyle, TextInputProps } from 'react-native';
+import { colors } from '../theme/colors';
 
 interface InputProps extends Omit<TextInputProps, 'style'> {
   value: string;
@@ -36,7 +37,7 @@ const Input: React.FC<InputProps> = ({
         value={value}
         onChangeText={onChangeText}
         placeholder={placeholder}
-        placeholderTextColor="#999"
+        placeholderTextColor={colors.textLight}
         keyboardType={keyboardType}
         autoCapitalize={autoCapitalize}
         editable={editable}
@@ -56,28 +57,29 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
+    color: colors.text,
     marginBottom: 8,
   },
   input: {
     borderWidth: 1,
-    borderColor: '#DDD',
+    borderColor: colors.border,
     borderRadius: 8,
     paddingHorizontal: 16,
     paddingVertical: 12,
     fontSize: 16,
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background,
     minHeight: 44,
+    color: colors.text,
   },
   inputError: {
-    borderColor: '#FF3B30',
+    borderColor: colors.error,
   },
   inputDisabled: {
-    backgroundColor: '#F5F5F5',
-    color: '#999',
+    backgroundColor: colors.backgroundLight,
+    color: colors.textLight,
   },
   errorText: {
-    color: '#FF3B30',
+    color: colors.error,
     fontSize: 12,
     marginTop: 4,
   },

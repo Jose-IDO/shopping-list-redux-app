@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import Button from './Button';
+import { colors } from '../theme/colors';
 
 interface ConfirmDialogProps {
   visible: boolean;
@@ -63,18 +64,18 @@ const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
 const styles = StyleSheet.create({
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: colors.overlay,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
   },
   dialog: {
-    backgroundColor: '#FFF',
+    backgroundColor: colors.card,
     borderRadius: 12,
     padding: 24,
     width: '100%',
     maxWidth: 400,
-    shadowColor: '#000',
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
@@ -83,12 +84,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#333',
+    color: colors.text,
     marginBottom: 12,
   },
   message: {
     fontSize: 16,
-    color: '#666',
+    color: colors.textTertiary,
     marginBottom: 24,
     lineHeight: 22,
   },

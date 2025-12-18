@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { ShoppingItem } from '../types';
+import { colors } from '../theme/colors';
 
 interface StatisticsCardProps {
   items: ShoppingItem[];
@@ -47,13 +48,13 @@ const StatisticsCard: React.FC<StatisticsCardProps> = ({ items }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    backgroundColor: '#FFF',
+    backgroundColor: colors.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
-    shadowColor: '#000',
+    borderColor: colors.border,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -68,27 +69,27 @@ const styles = StyleSheet.create({
   statValue: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: colors.text,
     marginBottom: 4,
   },
   purchasedValue: {
-    color: '#4CAF50',
+    color: colors.success,
   },
   remainingValue: {
-    color: '#FF9800',
+    color: colors.warning,
   },
   percentageValue: {
-    color: '#2196F3',
+    color: colors.blue,
   },
   statLabel: {
     fontSize: 12,
-    color: '#666',
+    color: colors.textTertiary,
     fontWeight: '500',
   },
   divider: {
     width: 1,
     height: 40,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: colors.border,
     marginHorizontal: 8,
   },
 });

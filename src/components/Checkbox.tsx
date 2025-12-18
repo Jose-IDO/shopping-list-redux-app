@@ -1,5 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import CheckmarkIcon from './icons/CheckmarkIcon';
+import { colors } from '../theme/colors';
 
 interface CheckboxProps {
   checked: boolean;
@@ -27,7 +29,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
       accessibilityLabel={accessibilityLabel || label}
     >
       <View style={[styles.checkbox, checked && styles.checkboxChecked]}>
-        {checked && <View style={styles.checkmark} />}
+        {checked && <CheckmarkIcon width={14} height={14} color={colors.textWhite} />}
       </View>
       {label && <Text style={[styles.label, checked && styles.labelChecked]}>{label}</Text>}
     </TouchableOpacity>
@@ -44,34 +46,25 @@ const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderWidth: 2,
-    borderColor: '#007AFF',
+    borderColor: colors.purple,
     borderRadius: 4,
     marginRight: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background,
   },
   checkboxChecked: {
-    backgroundColor: '#007AFF',
-  },
-  checkmark: {
-    width: 6,
-    height: 10,
-    borderColor: '#FFF',
-    borderWidth: 2,
-    borderTopWidth: 0,
-    borderLeftWidth: 0,
-    transform: [{ rotate: '45deg' }],
-    marginTop: -2,
+    backgroundColor: colors.purple,
+    borderColor: colors.purple,
   },
   label: {
     fontSize: 16,
-    color: '#333',
+    color: colors.text,
     flex: 1,
   },
   labelChecked: {
     textDecorationLine: 'line-through',
-    color: '#999',
+    color: colors.textLight,
   },
   disabled: {
     opacity: 0.5,

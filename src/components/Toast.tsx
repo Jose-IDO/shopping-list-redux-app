@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
+import { colors } from '../theme/colors';
 
 interface ToastProps {
   message: string;
@@ -80,16 +81,16 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
   },
   success: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.success,
   },
   error: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: colors.error,
   },
   info: {
-    backgroundColor: '#2196F3',
+    backgroundColor: colors.blue,
   },
   message: {
-    color: '#FFF',
+    color: colors.textWhite,
     fontSize: 14,
     fontWeight: '600',
     textAlign: 'center',

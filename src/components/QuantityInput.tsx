@@ -1,5 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
+import MinusIcon from './icons/MinusIcon';
+import PlusIcon from './icons/PlusIcon';
+import { colors } from '../theme/colors';
 
 interface QuantityInputProps {
   value: number;
@@ -40,7 +43,7 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
           accessibilityRole="button"
           accessibilityLabel="Decrease quantity"
         >
-          <Text style={styles.buttonText}>−</Text>
+          <MinusIcon width={20} height={20} color={colors.purple} />
         </TouchableOpacity>
         <View style={styles.valueContainer}>
           <Text style={styles.value}>{value}</Text>
@@ -53,7 +56,7 @@ const QuantityInput: React.FC<QuantityInputProps> = ({
           accessibilityRole="button"
           accessibilityLabel="Increase quantity"
         >
-          <Text style={styles.buttonText}>+</Text>
+          <PlusIcon width={20} height={20} color={colors.purple} />
         </TouchableOpacity>
       </View>
     </View>
@@ -67,32 +70,27 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
+    color: colors.text,
     marginBottom: 8,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#DDD',
+    borderColor: colors.border,
     borderRadius: 8,
     overflow: 'hidden',
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background,
   },
   button: {
     width: 44,
     height: 44,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.backgroundLight,
   },
   buttonDisabled: {
     opacity: 0.5,
-  },
-  buttonText: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#007AFF',
   },
   valueContainer: {
     flex: 1,
@@ -104,7 +102,7 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
+    color: colors.text,
   },
 });
 

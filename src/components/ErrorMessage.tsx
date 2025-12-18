@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
+import CloseIcon from './icons/CloseIcon';
+import { colors } from '../theme/colors';
 
 interface ErrorMessageProps {
   message: string | null;
@@ -26,7 +28,7 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onDismiss, style }
           accessibilityRole="button"
           accessibilityLabel="Dismiss error"
         >
-          <Text style={styles.dismissText}>×</Text>
+          <CloseIcon width={18} height={18} color={colors.error} />
         </TouchableOpacity>
       )}
     </View>
@@ -35,9 +37,9 @@ const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onDismiss, style }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFEBEE',
+    backgroundColor: colors.backgroundLight,
     borderLeftWidth: 4,
-    borderLeftColor: '#FF3B30',
+    borderLeftColor: colors.error,
     padding: 12,
     borderRadius: 4,
     marginVertical: 8,
@@ -46,18 +48,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   message: {
-    color: '#C62828',
+    color: colors.error,
     fontSize: 14,
     flex: 1,
+    fontWeight: '500',
   },
   dismissButton: {
     marginLeft: 12,
     padding: 4,
-  },
-  dismissText: {
-    color: '#C62828',
-    fontSize: 20,
-    fontWeight: 'bold',
   },
 });
 

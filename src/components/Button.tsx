@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
+import { colors } from '../theme/colors';
 
 interface ButtonProps {
   title: string;
@@ -44,7 +45,7 @@ const Button: React.FC<ButtonProps> = ({
       accessibilityLabel={title}
     >
       {loading ? (
-        <ActivityIndicator color={variant === 'primary' ? '#FFFFFF' : '#007AFF'} />
+        <ActivityIndicator color={variant === 'primary' ? colors.textWhite : colors.purple} />
       ) : (
         <Text style={buttonTextStyle}>{title}</Text>
       )}
@@ -62,15 +63,15 @@ const styles = StyleSheet.create({
     minHeight: 44,
   },
   primary: {
-    backgroundColor: '#007AFF',
+    backgroundColor: colors.purple,
   },
   secondary: {
     backgroundColor: 'transparent',
     borderWidth: 1,
-    borderColor: '#007AFF',
+    borderColor: colors.purple,
   },
   danger: {
-    backgroundColor: '#FF3B30',
+    backgroundColor: colors.error,
   },
   disabled: {
     opacity: 0.5,
@@ -80,13 +81,13 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   primaryText: {
-    color: '#FFFFFF',
+    color: colors.textWhite,
   },
   secondaryText: {
-    color: '#007AFF',
+    color: colors.purple,
   },
   dangerText: {
-    color: '#FFFFFF',
+    color: colors.textWhite,
   },
   disabledText: {
     opacity: 0.7,

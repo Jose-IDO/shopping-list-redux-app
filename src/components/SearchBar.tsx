@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, TextInput, StyleSheet, TouchableOpacity, Text } from 'react-native';
+import { View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import CloseIcon from './icons/CloseIcon';
+import { colors } from '../theme/colors';
 
 interface SearchBarProps {
   value: string;
@@ -34,7 +36,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
           accessibilityRole="button"
           accessibilityLabel="Clear search"
         >
-          <Text style={styles.clearText}>×</Text>
+          <CloseIcon width={18} height={18} color={colors.textTertiary} />
         </TouchableOpacity>
       )}
     </View>
@@ -45,10 +47,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF',
+    backgroundColor: colors.background,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#DDD',
+    borderColor: colors.border,
     marginBottom: 16,
     paddingHorizontal: 12,
     minHeight: 44,
@@ -56,17 +58,12 @@ const styles = StyleSheet.create({
   input: {
     flex: 1,
     fontSize: 16,
-    color: '#333',
+    color: colors.text,
     paddingVertical: 8,
   },
   clearButton: {
     padding: 4,
     marginLeft: 8,
-  },
-  clearText: {
-    fontSize: 20,
-    color: '#999',
-    fontWeight: 'bold',
   },
 });
 

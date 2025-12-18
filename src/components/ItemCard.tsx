@@ -3,6 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import Button from './Button';
 import Checkbox from './Checkbox';
 import { ShoppingItem } from '../types';
+import { colors } from '../theme/colors';
 
 interface ItemCardProps {
   item: ShoppingItem;
@@ -64,13 +65,13 @@ const ItemCard: React.FC<ItemCardProps> = ({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFF',
+    backgroundColor: colors.card,
     borderRadius: 12,
     padding: 16,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
-    shadowColor: '#000',
+    borderColor: colors.border,
+    shadowColor: colors.primary,
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
@@ -78,7 +79,7 @@ const styles = StyleSheet.create({
   },
   cardPurchased: {
     opacity: 0.7,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.backgroundLight,
   },
   content: {
     flexDirection: 'row',
@@ -92,19 +93,19 @@ const styles = StyleSheet.create({
   itemName: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#333',
+    color: colors.text,
     marginBottom: 4,
   },
   itemNamePurchased: {
     textDecorationLine: 'line-through',
-    color: '#999',
+    color: colors.textLight,
   },
   itemQuantity: {
     fontSize: 14,
-    color: '#666',
+    color: colors.textTertiary,
   },
   itemQuantityPurchased: {
-    color: '#999',
+    color: colors.textLight,
   },
   actions: {
     flexDirection: 'row',

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import Button from './Button';
+import { colors } from '../theme/colors';
 
 export type SortOption = 'name' | 'date' | 'purchased';
 export type FilterOption = 'all' | 'purchased' | 'unpurchased';
@@ -108,12 +109,12 @@ const SortFilterBar: React.FC<SortFilterBarProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
+    backgroundColor: colors.card,
     padding: 12,
     borderRadius: 8,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#E0E0E0',
+    borderColor: colors.border,
   },
   section: {
     marginBottom: 12,
@@ -121,7 +122,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     fontWeight: '600',
-    color: '#333',
+    color: colors.text,
     marginBottom: 8,
   },
   options: {
@@ -132,21 +133,21 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 6,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.backgroundLight,
     borderWidth: 1,
-    borderColor: '#DDD',
+    borderColor: colors.border,
   },
   optionActive: {
-    backgroundColor: '#007AFF',
-    borderColor: '#007AFF',
+    backgroundColor: colors.purple,
+    borderColor: colors.purple,
   },
   optionText: {
     fontSize: 14,
     fontWeight: '500',
-    color: '#666',
+    color: colors.textTertiary,
   },
   optionTextActive: {
-    color: '#FFF',
+    color: colors.textWhite,
   },
 });
 

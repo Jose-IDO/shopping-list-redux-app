@@ -25,6 +25,8 @@ import ConfirmDialog from '../components/ConfirmDialog';
 import SortFilterBar, { SortOption, FilterOption } from '../components/SortFilterBar';
 import SearchBar from '../components/SearchBar';
 import StatisticsCard from '../components/StatisticsCard';
+import ShoppingCartIcon from '../components/icons/ShoppingCartIcon';
+import { colors } from '../theme/colors';
 
 const ShoppingListScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -275,7 +277,7 @@ const ShoppingListScreen: React.FC = () => {
 
     return (
       <View style={styles.emptyContainer}>
-        <Text style={styles.emptyIcon}>🛒</Text>
+        <ShoppingCartIcon width={80} height={80} color={colors.purple} />
         <Text style={styles.emptyText}>Your shopping list is empty</Text>
         <Text style={styles.emptySubtext}>
           Start adding items to your list by tapping the button below
@@ -446,7 +448,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#333',
+    color: colors.textWhite,
     marginBottom: 8,
   },
   headerInfo: {
@@ -457,19 +459,21 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: colors.textWhite + 'CC',
     fontWeight: '500',
   },
   countBadge: {
-    backgroundColor: '#E3F2FD',
+    backgroundColor: colors.blueAccent + '20',
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 12,
     marginLeft: 8,
+    borderWidth: 1,
+    borderColor: colors.blueAccent + '40',
   },
   countBadgeText: {
     fontSize: 14,
-    color: '#1976D2',
+    color: colors.blue,
     fontWeight: '600',
   },
   listContent: {
@@ -485,22 +489,19 @@ const styles = StyleSheet.create({
   emptyText: {
     fontSize: 20,
     fontWeight: '600',
-    color: '#999',
+    color: colors.textWhite,
+    marginTop: 16,
     marginBottom: 8,
   },
   emptySubtext: {
     fontSize: 16,
-    color: '#999',
+    color: colors.textWhite + 'CC',
     textAlign: 'center',
     marginBottom: 8,
   },
-  emptyIcon: {
-    fontSize: 64,
-    marginBottom: 16,
-  },
   emptyHint: {
     fontSize: 14,
-    color: '#999',
+    color: colors.textWhite + 'AA',
     textAlign: 'center',
     marginTop: 16,
     paddingHorizontal: 32,
@@ -512,7 +513,7 @@ const styles = StyleSheet.create({
   },
   loadingText: {
     fontSize: 16,
-    color: '#666',
+    color: colors.textWhite + 'CC',
     marginTop: 16,
   },
   addButton: {
@@ -520,11 +521,11 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: colors.overlay,
     justifyContent: 'flex-end',
   },
   modalContent: {
-    backgroundColor: '#FFF',
+    backgroundColor: colors.card,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
     padding: 24,
@@ -534,7 +535,7 @@ const styles = StyleSheet.create({
   modalTitle: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#333',
+    color: colors.text,
     marginBottom: 24,
   },
   modalActions: {
