@@ -22,6 +22,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import Toast from '../components/Toast';
 import QuantityInput from '../components/QuantityInput';
 import ConfirmDialog from '../components/ConfirmDialog';
+import SortFilterBar, { SortOption, FilterOption } from '../components/SortFilterBar';
 
 const ShoppingListScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,8 @@ const ShoppingListScreen: React.FC = () => {
   const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success');
   const [confirmDialogVisible, setConfirmDialogVisible] = useState<boolean>(false);
   const [itemToDelete, setItemToDelete] = useState<{ id: string; name: string } | null>(null);
+  const [sortOption, setSortOption] = useState<SortOption>('date');
+  const [filterOption, setFilterOption] = useState<FilterOption>('all');
 
   useEffect(() => {
     loadItems();
@@ -175,6 +178,42 @@ const ShoppingListScreen: React.FC = () => {
     dispatch(togglePurchased(id));
   };
 
+  const sortItems = (itemsToSort: ShoppingItem[], sortBy: SortOption): ShoppingItem[] => {
+    const sorted = [...itemsToSort];
+    switch (sortBy) {
+      case 'name':
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case 'date':
+        return sorted.sort((a, b) => 
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+      case 'purchased':
+        return sorted.sort((a, b) => {
+          if (a.purchased === b.purchased) return 0;
+          return a.purchased ? 1 : -1;
+        });
+      default:
+        return sorted;
+    }
+  };
+
+  const filterItems = (itemsToFilter: ShoppingItem[], filterBy: FilterOption): ShoppingItem[] => {
+    switch (filterBy) {
+      case 'purchased':
+        return itemsToFilter.filter(item => item.purchased);
+      case 'unpurchased':
+        return itemsToFilter.filter(item => !item.purchased);
+      case 'all':
+      default:
+        return itemsToFilter;
+    }
+  };
+
+  const getDisplayedItems = (): ShoppingItem[] => {
+    const filtered = filterItems(items, filterOption);
+    return sortItems(filtered, sortOption);
+  };
+
   const renderItem: ListRenderItem<ShoppingItem> = ({ item }) => (
     <ItemCard
       item={item}
@@ -223,8 +262,17 @@ const ShoppingListScreen: React.FC = () => {
           />
         )}
 
+        {items.length > 0 && (
+          <SortFilterBar
+            sortOption={sortOption}
+            filterOption={filterOption}
+            onSortChange={setSortOption}
+            onFilterChange={setFilterOption}
+          />
+        )}
+
         <FlatList
-          data={items}
+          data={getDisplayedItems()}
           renderItem={renderItem}
           keyExtractor={item => item.id}
           ListEmptyComponent={renderEmptyList}

@@ -7,6 +7,9 @@ const initialState: ShoppingListState = {
   error: null,
 };
 
+export type SortOption = 'name' | 'date' | 'purchased';
+export type FilterOption = 'all' | 'purchased' | 'unpurchased';
+
 interface AddItemPayload {
   name: string;
   quantity?: number;
