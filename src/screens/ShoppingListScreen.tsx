@@ -248,10 +248,41 @@ const ShoppingListScreen: React.FC = () => {
         </View>
       );
     }
+
+    const hasSearchOrFilter = searchQuery.trim().length > 0 || filterOption !== 'all';
+    
+    if (hasSearchOrFilter) {
+      return (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No items found</Text>
+          <Text style={styles.emptySubtext}>
+            {searchQuery.trim().length > 0 
+              ? `No items match "${searchQuery}"`
+              : 'Try adjusting your filters'}
+          </Text>
+          <Button
+            title="Clear Filters"
+            onPress={() => {
+              setSearchQuery('');
+              setFilterOption('all');
+            }}
+            variant="secondary"
+            style={styles.emptyActionButton}
+          />
+        </View>
+      );
+    }
+
     return (
       <View style={styles.emptyContainer}>
+        <Text style={styles.emptyIcon}>🛒</Text>
         <Text style={styles.emptyText}>Your shopping list is empty</Text>
-        <Text style={styles.emptySubtext}>Tap the button below to add items</Text>
+        <Text style={styles.emptySubtext}>
+          Start adding items to your list by tapping the button below
+        </Text>
+        <Text style={styles.emptyHint}>
+          You can add items with names and quantities, then mark them as purchased when you're done shopping
+        </Text>
       </View>
     );
   };
@@ -425,6 +456,24 @@ const styles = StyleSheet.create({
   emptySubtext: {
     fontSize: 16,
     color: '#999',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  emptyIcon: {
+    fontSize: 64,
+    marginBottom: 16,
+  },
+  emptyHint: {
+    fontSize: 14,
+    color: '#999',
+    textAlign: 'center',
+    marginTop: 16,
+    paddingHorizontal: 32,
+    lineHeight: 20,
+  },
+  emptyActionButton: {
+    marginTop: 16,
+    minWidth: 150,
   },
   loadingText: {
     fontSize: 16,
