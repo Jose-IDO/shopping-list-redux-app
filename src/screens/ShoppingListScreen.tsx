@@ -24,6 +24,7 @@ import QuantityInput from '../components/QuantityInput';
 import ConfirmDialog from '../components/ConfirmDialog';
 import SortFilterBar, { SortOption, FilterOption } from '../components/SortFilterBar';
 import SearchBar from '../components/SearchBar';
+import StatisticsCard from '../components/StatisticsCard';
 
 const ShoppingListScreen: React.FC = () => {
   const dispatch = useDispatch();
@@ -278,11 +279,14 @@ const ShoppingListScreen: React.FC = () => {
         )}
 
         {items.length > 0 && (
-          <SearchBar
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onClear={() => setSearchQuery('')}
-          />
+          <>
+            <StatisticsCard items={items} />
+            <SearchBar
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+              onClear={() => setSearchQuery('')}
+            />
+          </>
         )}
 
         {items.length > 0 && (
