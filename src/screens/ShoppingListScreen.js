@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Modal, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Modal, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   addItem,
@@ -9,6 +9,7 @@ import {
   setItems,
   setError,
   clearError,
+  setLoading,
 } from '../store/slices/shoppingListSlice';
 import { loadItemsFromStorage, saveItemsToStorage } from '../utils/storage';
 import Container from '../components/Container';
@@ -21,7 +22,7 @@ import QuantityInput from '../components/QuantityInput';
 
 const ShoppingListScreen = () => {
   const dispatch = useDispatch();
-  const { items, error } = useSelector(state => state.shoppingList);
+  const { items, error, loading } = useSelector(state => state.shoppingList);
   const [modalVisible, setModalVisible] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -44,10 +45,13 @@ const ShoppingListScreen = () => {
 
   const loadItems = async () => {
     try {
+      dispatch(setLoading(true));
       const savedItems = await loadItemsFromStorage();
       dispatch(setItems(savedItems));
+      dispatch(setLoading(false));
     } catch (error) {
       dispatch(setError('Failed to load shopping list'));
+      dispatch(setLoading(false));
       showToast('Failed to load shopping list', 'error');
     }
   };
@@ -152,12 +156,22 @@ const ShoppingListScreen = () => {
     />
   );
 
-  const renderEmptyList = () => (
-    <View style={styles.emptyContainer}>
-      <Text style={styles.emptyText}>Your shopping list is empty</Text>
-      <Text style={styles.emptySubtext}>Tap the button below to add items</Text>
-    </View>
-  );
+  const renderEmptyList = () => {
+    if (loading) {
+      return (
+        <View style={styles.emptyContainer}>
+          <ActivityIndicator size="large" color="#007AFF" />
+          <Text style={styles.loadingText}>Loading your shopping list...</Text>
+        </View>
+      );
+    }
+    return (
+      <View style={styles.emptyContainer}>
+        <Text style={styles.emptyText}>Your shopping list is empty</Text>
+        <Text style={styles.emptySubtext}>Tap the button below to add items</Text>
+      </View>
+    );
+  };
 
   return (
     <Container>
@@ -297,6 +311,11 @@ const styles = StyleSheet.create({
   emptySubtext: {
     fontSize: 16,
     color: '#999',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 16,
   },
   addButton: {
     marginTop: 16,
