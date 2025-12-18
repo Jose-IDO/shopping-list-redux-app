@@ -1,7 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
+import { View, StyleSheet, SafeAreaView, ViewStyle } from 'react-native';
 
-const Container = ({ children, style, safeArea = true }) => {
+interface ContainerProps {
+  children: React.ReactNode;
+  style?: ViewStyle;
+  safeArea?: boolean;
+}
+
+const Container: React.FC<ContainerProps> = ({ children, style, safeArea = true }) => {
   const content = <View style={[styles.container, style]}>{children}</View>;
 
   if (safeArea) {

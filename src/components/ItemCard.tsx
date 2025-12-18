@@ -1,9 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Button from './Button';
 import Checkbox from './Checkbox';
+import { ShoppingItem } from '../types';
 
-const ItemCard = ({ item, onTogglePurchased, onEdit, onDelete, disabled = false }) => {
+interface ItemCardProps {
+  item: ShoppingItem;
+  onTogglePurchased: (id: string) => void;
+  onEdit: (item: ShoppingItem) => void;
+  onDelete: (id: string) => void;
+  disabled?: boolean;
+}
+
+const ItemCard: React.FC<ItemCardProps> = ({ 
+  item, 
+  onTogglePurchased, 
+  onEdit, 
+  onDelete, 
+  disabled = false 
+}) => {
   return (
     <View
       style={[styles.card, item.purchased && styles.cardPurchased]}

@@ -1,8 +1,22 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 
-const Toast = ({ message, type = 'success', visible, onHide, duration = 3000 }) => {
-  const opacity = React.useRef(new Animated.Value(0)).current;
+interface ToastProps {
+  message: string;
+  type?: 'success' | 'error' | 'info';
+  visible: boolean;
+  onHide?: () => void;
+  duration?: number;
+}
+
+const Toast: React.FC<ToastProps> = ({ 
+  message, 
+  type = 'success', 
+  visible, 
+  onHide, 
+  duration = 3000 
+}) => {
+  const opacity = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (visible) {
@@ -20,7 +34,7 @@ const Toast = ({ message, type = 'success', visible, onHide, duration = 3000 }) 
     } else {
       hideToast();
     }
-  }, [visible]);
+  }, [visible, duration]);
 
   const hideToast = () => {
     Animated.timing(opacity, {

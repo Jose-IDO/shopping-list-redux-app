@@ -1,7 +1,21 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 
-const Checkbox = ({ checked, onPress, label, disabled = false, accessibilityLabel }) => {
+interface CheckboxProps {
+  checked: boolean;
+  onPress: () => void;
+  label?: string;
+  disabled?: boolean;
+  accessibilityLabel?: string;
+}
+
+const Checkbox: React.FC<CheckboxProps> = ({ 
+  checked, 
+  onPress, 
+  label, 
+  disabled = false, 
+  accessibilityLabel 
+}) => {
   return (
     <TouchableOpacity
       style={[styles.container, disabled && styles.disabled]}

@@ -1,21 +1,33 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { ShoppingListState, ShoppingItem } from '../../types';
 
-const initialState = {
+const initialState: ShoppingListState = {
   items: [],
   loading: false,
   error: null,
 };
 
+interface AddItemPayload {
+  name: string;
+  quantity?: number;
+}
+
+interface EditItemPayload {
+  id: string;
+  name?: string;
+  quantity?: number;
+}
+
 const shoppingListSlice = createSlice({
   name: 'shoppingList',
   initialState,
   reducers: {
-    setItems: (state, action) => {
+    setItems: (state, action: PayloadAction<ShoppingItem[]>) => {
       state.items = action.payload;
       state.error = null;
     },
-    addItem: (state, action) => {
-      const newItem = {
+    addItem: (state, action: PayloadAction<AddItemPayload>) => {
+      const newItem: ShoppingItem = {
         id: Date.now().toString(),
         name: action.payload.name,
         quantity: action.payload.quantity || 1,
@@ -25,7 +37,7 @@ const shoppingListSlice = createSlice({
       state.items.push(newItem);
       state.error = null;
     },
-    editItem: (state, action) => {
+    editItem: (state, action: PayloadAction<EditItemPayload>) => {
       const { id, name, quantity } = action.payload;
       const item = state.items.find(item => item.id === id);
       if (item) {
@@ -34,20 +46,20 @@ const shoppingListSlice = createSlice({
       }
       state.error = null;
     },
-    deleteItem: (state, action) => {
+    deleteItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter(item => item.id !== action.payload);
       state.error = null;
     },
-    togglePurchased: (state, action) => {
+    togglePurchased: (state, action: PayloadAction<string>) => {
       const item = state.items.find(item => item.id === action.payload);
       if (item) {
         item.purchased = !item.purchased;
       }
     },
-    setLoading: (state, action) => {
+    setLoading: (state, action: PayloadAction<boolean>) => {
       state.loading = action.payload;
     },
-    setError: (state, action) => {
+    setError: (state, action: PayloadAction<string>) => {
       state.error = action.payload;
     },
     clearError: (state) => {

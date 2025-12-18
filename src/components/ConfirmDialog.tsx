@@ -2,7 +2,18 @@ import React from 'react';
 import { View, Text, Modal, StyleSheet } from 'react-native';
 import Button from './Button';
 
-const ConfirmDialog = ({
+interface ConfirmDialogProps {
+  visible: boolean;
+  title: string;
+  message: string;
+  confirmText?: string;
+  cancelText?: string;
+  onConfirm: () => void;
+  onCancel: () => void;
+  variant?: 'primary' | 'secondary' | 'danger';
+}
+
+const ConfirmDialog: React.FC<ConfirmDialogProps> = ({
   visible,
   title,
   message,

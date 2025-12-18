@@ -1,8 +1,21 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import Button from './Button';
+import { View, Text, TouchableOpacity, StyleSheet, ViewStyle } from 'react-native';
 
-const QuantityInput = ({ value, onChange, min = 1, max = 999, style }) => {
+interface QuantityInputProps {
+  value: number;
+  onChange: (value: number) => void;
+  min?: number;
+  max?: number;
+  style?: ViewStyle;
+}
+
+const QuantityInput: React.FC<QuantityInputProps> = ({ 
+  value, 
+  onChange, 
+  min = 1, 
+  max = 999, 
+  style 
+}) => {
   const handleDecrease = () => {
     if (value > min) {
       onChange(value - 1);

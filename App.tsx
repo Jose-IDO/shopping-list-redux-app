@@ -4,7 +4,7 @@ import { store } from './src/store/store';
 import ShoppingListScreen from './src/screens/ShoppingListScreen';
 import { StatusBar } from 'expo-status-bar';
 
-export default function App() {
+export default function App(): React.JSX.Element {
   return (
     <Provider store={store}>
       <ShoppingListScreen />
@@ -12,3 +12,4 @@ export default function App() {
     </Provider>
   );
 }
+

@@ -1,7 +1,25 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, ActivityIndicator, ViewStyle, TextStyle } from 'react-native';
 
-const Button = ({ title, onPress, variant = 'primary', disabled = false, loading = false, style, textStyle }) => {
+interface ButtonProps {
+  title: string;
+  onPress: () => void;
+  variant?: 'primary' | 'secondary' | 'danger';
+  disabled?: boolean;
+  loading?: boolean;
+  style?: ViewStyle;
+  textStyle?: TextStyle;
+}
+
+const Button: React.FC<ButtonProps> = ({ 
+  title, 
+  onPress, 
+  variant = 'primary', 
+  disabled = false, 
+  loading = false, 
+  style, 
+  textStyle 
+}) => {
   const buttonStyle = [
     styles.button,
     styles[variant],
@@ -11,7 +29,7 @@ const Button = ({ title, onPress, variant = 'primary', disabled = false, loading
 
   const buttonTextStyle = [
     styles.text,
-    styles[`${variant}Text`],
+    styles[`${variant}Text` as keyof typeof styles],
     disabled && styles.disabledText,
     textStyle,
   ];

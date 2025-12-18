@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Modal, KeyboardAvoidingView, Platform, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Modal, KeyboardAvoidingView, Platform, ActivityIndicator, ListRenderItem } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   addItem,
@@ -12,6 +12,8 @@ import {
   setLoading,
 } from '../store/slices/shoppingListSlice';
 import { loadItemsFromStorage, saveItemsToStorage } from '../utils/storage';
+import { RootState } from '../store/store';
+import { ShoppingItem } from '../types';
 import Container from '../components/Container';
 import Button from '../components/Button';
 import Input from '../components/Input';
@@ -21,20 +23,20 @@ import Toast from '../components/Toast';
 import QuantityInput from '../components/QuantityInput';
 import ConfirmDialog from '../components/ConfirmDialog';
 
-const ShoppingListScreen = () => {
+const ShoppingListScreen: React.FC = () => {
   const dispatch = useDispatch();
-  const { items, error, loading } = useSelector(state => state.shoppingList);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [editingItem, setEditingItem] = useState(null);
-  const [itemName, setItemName] = useState('');
-  const [quantity, setQuantity] = useState(1);
-  const [nameError, setNameError] = useState('');
-  const [toastVisible, setToastVisible] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('success');
-  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
+  const { items, error, loading } = useSelector((state: RootState) => state.shoppingList);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
+  const [itemName, setItemName] = useState<string>('');
+  const [quantity, setQuantity] = useState<number>(1);
+  const [nameError, setNameError] = useState<string>('');
+  const [toastVisible, setToastVisible] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string>('');
+  const [toastType, setToastType] = useState<'success' | 'error' | 'info'>('success');
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState<boolean>(false);
+  const [itemToDelete, setItemToDelete] = useState<{ id: string; name: string } | null>(null);
 
   useEffect(() => {
     loadItems();
@@ -46,7 +48,7 @@ const ShoppingListScreen = () => {
     }
   }, [items]);
 
-  const loadItems = async () => {
+  const loadItems = async (): Promise<void> => {
     try {
       dispatch(setLoading(true));
       const savedItems = await loadItemsFromStorage();
@@ -59,7 +61,7 @@ const ShoppingListScreen = () => {
     }
   };
 
-  const saveItems = async () => {
+  const saveItems = async (): Promise<void> => {
     try {
       await saveItemsToStorage(items);
     } catch (error) {
@@ -68,13 +70,13 @@ const ShoppingListScreen = () => {
     }
   };
 
-  const showToast = (message, type = 'success') => {
+  const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success'): void => {
     setToastMessage(message);
     setToastType(type);
     setToastVisible(true);
   };
 
-  const resetForm = () => {
+  const resetForm = (): void => {
     setItemName('');
     setQuantity(1);
     setNameError('');
@@ -82,12 +84,12 @@ const ShoppingListScreen = () => {
     setEditMode(false);
   };
 
-  const openAddModal = () => {
+  const openAddModal = (): void => {
     resetForm();
     setModalVisible(true);
   };
 
-  const openEditModal = (item) => {
+  const openEditModal = (item: ShoppingItem): void => {
     setItemName(item.name);
     setQuantity(item.quantity);
     setEditingItem(item);
@@ -96,12 +98,12 @@ const ShoppingListScreen = () => {
     setNameError('');
   };
 
-  const closeModal = () => {
+  const closeModal = (): void => {
     setModalVisible(false);
     resetForm();
   };
 
-  const validateForm = () => {
+  const validateForm = (): boolean => {
     if (!itemName.trim()) {
       setNameError('Item name is required');
       return false;
@@ -118,7 +120,7 @@ const ShoppingListScreen = () => {
     return true;
   };
 
-  const handleSave = () => {
+  const handleSave = (): void => {
     if (!validateForm()) {
       return;
     }
@@ -141,13 +143,13 @@ const ShoppingListScreen = () => {
     closeModal();
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = (id: string): void => {
     const item = items.find(item => item.id === id);
     setItemToDelete({ id, name: item?.name || 'this item' });
     setConfirmDialogVisible(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = (): void => {
     if (itemToDelete) {
       dispatch(deleteItem(itemToDelete.id));
       showToast('Item deleted successfully');
@@ -156,16 +158,16 @@ const ShoppingListScreen = () => {
     setConfirmDialogVisible(false);
   };
 
-  const cancelDelete = () => {
+  const cancelDelete = (): void => {
     setConfirmDialogVisible(false);
     setItemToDelete(null);
   };
 
-  const handleTogglePurchased = (id) => {
+  const handleTogglePurchased = (id: string): void => {
     dispatch(togglePurchased(id));
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem: ListRenderItem<ShoppingItem> = ({ item }) => (
     <ItemCard
       item={item}
       onTogglePurchased={handleTogglePurchased}
@@ -174,7 +176,7 @@ const ShoppingListScreen = () => {
     />
   );
 
-  const renderEmptyList = () => {
+  const renderEmptyList = (): React.ReactElement => {
     if (loading) {
       return (
         <View style={styles.emptyContainer}>

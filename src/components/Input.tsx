@@ -1,7 +1,17 @@
 import React from 'react';
-import { TextInput, View, Text, StyleSheet } from 'react-native';
+import { TextInput, View, Text, StyleSheet, ViewStyle, TextInputProps } from 'react-native';
 
-const Input = ({
+interface InputProps extends Omit<TextInputProps, 'style'> {
+  value: string;
+  onChangeText: (text: string) => void;
+  placeholder?: string;
+  label?: string;
+  error?: string;
+  style?: ViewStyle;
+  accessibilityLabel?: string;
+}
+
+const Input: React.FC<InputProps> = ({
   value,
   onChangeText,
   placeholder,

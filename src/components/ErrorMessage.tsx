@@ -1,7 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ViewStyle } from 'react-native';
 
-const ErrorMessage = ({ message, onDismiss, style }) => {
+interface ErrorMessageProps {
+  message: string | null;
+  onDismiss?: () => void;
+  style?: ViewStyle;
+}
+
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ message, onDismiss, style }) => {
   if (!message) return null;
 
   return (
