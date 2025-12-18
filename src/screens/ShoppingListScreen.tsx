@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Modal, KeyboardAvoidingView, Platform, ActivityIndicator, ListRenderItem } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Modal, KeyboardAvoidingView, Platform, ActivityIndicator, ListRenderItem, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   addItem,
@@ -354,8 +354,10 @@ const ShoppingListScreen: React.FC = () => {
           accessible={true}
           accessibilityViewIsModal={true}
         >
-          <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={styles.modalOverlay}>
+              <TouchableWithoutFeedback onPress={() => {}}>
+                <View style={styles.modalContent}>
               <Text style={styles.modalTitle} accessible={true} accessibilityRole="header">
                 {editMode ? 'Edit Item' : 'Add Item'}
               </Text>
@@ -371,6 +373,8 @@ const ShoppingListScreen: React.FC = () => {
                 error={nameError}
                 autoCapitalize="words"
                 accessibilityLabel="Item name input"
+                returnKeyType="done"
+                onSubmitEditing={Keyboard.dismiss}
               />
 
               <QuantityInput
@@ -394,8 +398,10 @@ const ShoppingListScreen: React.FC = () => {
                   style={styles.modalButton}
                 />
               </View>
+                </View>
+              </TouchableWithoutFeedback>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
 
         <Toast
