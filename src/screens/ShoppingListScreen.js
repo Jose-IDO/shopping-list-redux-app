@@ -19,6 +19,7 @@ import ItemCard from '../components/ItemCard';
 import ErrorMessage from '../components/ErrorMessage';
 import Toast from '../components/Toast';
 import QuantityInput from '../components/QuantityInput';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const ShoppingListScreen = () => {
   const dispatch = useDispatch();
@@ -32,6 +33,8 @@ const ShoppingListScreen = () => {
   const [toastVisible, setToastVisible] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
   const [toastType, setToastType] = useState('success');
+  const [confirmDialogVisible, setConfirmDialogVisible] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
 
   useEffect(() => {
     loadItems();
@@ -139,8 +142,23 @@ const ShoppingListScreen = () => {
   };
 
   const handleDelete = (id) => {
-    dispatch(deleteItem(id));
-    showToast('Item deleted successfully');
+    const item = items.find(item => item.id === id);
+    setItemToDelete({ id, name: item?.name || 'this item' });
+    setConfirmDialogVisible(true);
+  };
+
+  const confirmDelete = () => {
+    if (itemToDelete) {
+      dispatch(deleteItem(itemToDelete.id));
+      showToast('Item deleted successfully');
+      setItemToDelete(null);
+    }
+    setConfirmDialogVisible(false);
+  };
+
+  const cancelDelete = () => {
+    setConfirmDialogVisible(false);
+    setItemToDelete(null);
   };
 
   const handleTogglePurchased = (id) => {
@@ -269,6 +287,17 @@ const ShoppingListScreen = () => {
           type={toastType}
           visible={toastVisible}
           onHide={() => setToastVisible(false)}
+        />
+
+        <ConfirmDialog
+          visible={confirmDialogVisible}
+          title="Delete Item"
+          message={`Are you sure you want to delete "${itemToDelete?.name}"? This action cannot be undone.`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          onConfirm={confirmDelete}
+          onCancel={cancelDelete}
+          variant="danger"
         />
       </KeyboardAvoidingView>
     </Container>
