@@ -290,8 +290,9 @@ const ShoppingListScreen: React.FC = () => {
   return (
     <Container>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === 'ios' ? 'padding' : Platform.OS === 'web' ? undefined : 'height'}
         style={styles.keyboardView}
+        enabled={Platform.OS !== 'web'}
       >
         <View style={styles.header}>
           <Text style={styles.title} accessible={true} accessibilityRole="header">
