@@ -2,6 +2,12 @@
 
 A React Native shopping list application built with Expo, Redux Toolkit, and TypeScript. Manage your shopping items with features like adding, editing, deleting, marking as purchased, searching, sorting, and filtering.
 
+## Download
+
+Download the app from Google Drive:
+
+[Download Shopping List App](https://drive.google.com/drive/folders/1UzeNfDEibrLLGFMeeY8Ajq-nGQUJQwei?usp=sharing)
+
 ## Features
 
 - **Add Items**: Create shopping list items with names and quantities
@@ -258,4 +264,6 @@ This project is private and not licensed for public use.
 ## Contact
 
 For questions or issues, please contact the repository owner.
+
+
 
