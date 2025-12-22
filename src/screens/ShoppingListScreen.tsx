@@ -510,6 +510,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginLeft: 12,
+    marginTop: 10,
     borderWidth: 2,
     borderColor: colors.textWhite + '40',
   },
@@ -579,7 +580,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   addButton: {
-    marginTop: 15,
+    marginTop: 5,
   },
   modalOverlay: {
     flex: 1,
