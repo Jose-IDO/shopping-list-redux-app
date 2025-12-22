@@ -2,6 +2,7 @@
   "expo": {
     "name": "shopping-list-app",
     "slug": "shopping-list-app",
+    "owner": "jose_id",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,10 +21,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "package": "com.jose_id.shoppinglistapp"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "459d0b58-6fe8-4e5a-a1a0-c4ab38913dc0"
+      }
     }
   }
 }
