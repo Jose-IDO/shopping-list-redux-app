@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Modal, KeyboardAvoidingView, Platform, ActivityIndicator, ListRenderItem, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { View, Text, FlatList, StyleSheet, Modal, KeyboardAvoidingView, Platform, ActivityIndicator, ListRenderItem, Pressable, Keyboard, TouchableOpacity } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import {
   addItem,
@@ -26,6 +26,7 @@ import SortFilterBar, { SortOption, FilterOption } from '../components/SortFilte
 import SearchBar from '../components/SearchBar';
 import StatisticsCard from '../components/StatisticsCard';
 import ShoppingCartIcon from '../components/icons/ShoppingCartIcon';
+import PlusIcon from '../components/icons/PlusIcon';
 import { colors } from '../theme/colors';
 
 const ShoppingListScreen: React.FC = () => {
@@ -50,11 +51,24 @@ const ShoppingListScreen: React.FC = () => {
     loadItems();
   }, []);
 
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
+
   useEffect(() => {
-    if (items.length > 0) {
-      saveItems();
+    if (itemsRef.current.length > 0) {
+      const save = async () => {
+        try {
+          await saveItemsToStorage(itemsRef.current);
+        } catch (error) {
+          const errorMessage = error instanceof Error 
+            ? error.message 
+            : 'Failed to save shopping list';
+          dispatch(setError(errorMessage));
+        }
+      };
+      save();
     }
-  }, [items]);
+  }, [items.length, dispatch]);
 
   const loadItems = async (): Promise<void> => {
     try {
@@ -74,17 +88,6 @@ const ShoppingListScreen: React.FC = () => {
     }
   };
 
-  const saveItems = async (): Promise<void> => {
-    try {
-      await saveItemsToStorage(items);
-    } catch (error) {
-      const errorMessage = error instanceof Error 
-        ? error.message 
-        : 'Failed to save shopping list';
-      dispatch(setError(errorMessage));
-      showToast('Unable to save changes. Your data may not persist.', 'error');
-    }
-  };
 
   const showToast = (message: string, type: 'success' | 'error' | 'info' = 'success'): void => {
     setToastMessage(message);
@@ -100,10 +103,15 @@ const ShoppingListScreen: React.FC = () => {
     setEditMode(false);
   };
 
-  const openAddModal = (): void => {
-    resetForm();
-    setModalVisible(true);
-  };
+  const openAddModal = useCallback((): void => {
+    try {
+      resetForm();
+      setModalVisible(true);
+    } catch (error) {
+      console.error('Error opening add modal:', error);
+      dispatch(setError('Failed to open add item form'));
+    }
+  }, [dispatch]);
 
   const openEditModal = (item: ShoppingItem): void => {
     setItemName(item.name);
@@ -136,28 +144,33 @@ const ShoppingListScreen: React.FC = () => {
     return true;
   };
 
-  const handleSave = (): void => {
-    if (!validateForm()) {
-      return;
-    }
+  const handleSave = useCallback((): void => {
+    try {
+      if (!validateForm()) {
+        return;
+      }
 
-    if (editMode && editingItem) {
-      dispatch(editItem({
-        id: editingItem.id,
-        name: itemName.trim(),
-        quantity: quantity,
-      }));
-      showToast('Item updated successfully');
-    } else {
-      dispatch(addItem({
-        name: itemName.trim(),
-        quantity: quantity,
-      }));
-      showToast('Item added successfully');
-    }
+      if (editMode && editingItem) {
+        dispatch(editItem({
+          id: editingItem.id,
+          name: itemName.trim(),
+          quantity: quantity,
+        }));
+        showToast('Item updated successfully');
+      } else {
+        dispatch(addItem({
+          name: itemName.trim(),
+          quantity: quantity,
+        }));
+        showToast('Item added successfully');
+      }
 
-    closeModal();
-  };
+      closeModal();
+    } catch (error) {
+      console.error('Error saving item:', error);
+      dispatch(setError('Failed to save item. Please try again.'));
+    }
+  }, [editMode, editingItem, itemName, quantity, dispatch]);
 
   const handleDelete = (id: string): void => {
     const item = items.find(item => item.id === id);
@@ -297,9 +310,29 @@ const ShoppingListScreen: React.FC = () => {
         enabled={Platform.OS !== 'web'}
       >
         <View style={styles.header}>
-          <Text style={styles.title} accessible={true} accessibilityRole="header">
-            Shopping List
-          </Text>
+          <View style={styles.titleRow}>
+            <Text style={styles.title} accessible={true} accessibilityRole="header">
+              Shopping List
+            </Text>
+            {items.length === 0 && (
+              <TouchableOpacity
+                style={styles.plusButton}
+                onPress={() => {
+                  try {
+                    openAddModal();
+                  } catch (error) {
+                    console.error('Error opening modal:', error);
+                  }
+                }}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Add item"
+                activeOpacity={0.7}
+              >
+                <PlusIcon width={28} height={28} color={colors.textWhite} />
+              </TouchableOpacity>
+            )}
+          </View>
           <View style={styles.headerInfo}>
             <Text style={styles.subtitle} accessible={true} accessibilityLabel={`Total items: ${items.length}`}>
               {items.length} {items.length === 1 ? 'item' : 'items'}
@@ -353,7 +386,14 @@ const ShoppingListScreen: React.FC = () => {
 
         <Button
           title="Add Item"
-          onPress={openAddModal}
+          onPress={() => {
+            try {
+              openAddModal();
+            } catch (error) {
+              console.error('Error opening modal:', error);
+              dispatch(setError('Failed to open add item form'));
+            }
+          }}
           variant="primary"
           style={styles.addButton}
         />
@@ -365,11 +405,18 @@ const ShoppingListScreen: React.FC = () => {
           onRequestClose={closeModal}
           accessible={true}
           accessibilityViewIsModal={true}
+          statusBarTranslucent={true}
         >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-            <View style={styles.modalOverlay}>
-              <TouchableWithoutFeedback onPress={() => {}}>
-                <View style={styles.modalContent}>
+          <Pressable 
+            style={styles.modalOverlay}
+            onPress={closeModal}
+            accessible={false}
+          >
+            <Pressable 
+              style={styles.modalContent}
+              onPress={(e) => e.stopPropagation()}
+              accessible={false}
+            >
               <Text style={styles.modalTitle} accessible={true} accessibilityRole="header">
                 {editMode ? 'Edit Item' : 'Add Item'}
               </Text>
@@ -410,10 +457,8 @@ const ShoppingListScreen: React.FC = () => {
                   style={styles.modalButton}
                 />
               </View>
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </TouchableWithoutFeedback>
+            </Pressable>
+          </Pressable>
         </Modal>
 
         <Toast
@@ -443,13 +488,30 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 23,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: 8,
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
     color: colors.textWhite,
-    marginBottom: 8,
+    flex: 1,
+  },
+  plusButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: colors.purple + '80',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 12,
+    borderWidth: 2,
+    borderColor: colors.textWhite + '40',
   },
   headerInfo: {
     flexDirection: 'row',
@@ -478,13 +540,13 @@ const styles = StyleSheet.create({
   },
   listContent: {
     flexGrow: 1,
-    paddingBottom: 16,
+    paddingBottom: 15,
   },
   emptyContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 60,
+    paddingVertical: 57,
   },
   emptyText: {
     fontSize: 20,
@@ -517,7 +579,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   addButton: {
-    marginTop: 16,
+    marginTop: 15,
   },
   modalOverlay: {
     flex: 1,
@@ -528,21 +590,22 @@ const styles = StyleSheet.create({
     backgroundColor: colors.card,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
-    padding: 24,
-    paddingBottom: 40,
+    padding: 23,
+    paddingBottom: 38,
     maxHeight: '80%',
+    width: '100%',
   },
   modalTitle: {
     fontSize: 24,
     fontWeight: 'bold',
     color: colors.text,
-    marginBottom: 24,
+    marginBottom: 23,
   },
   modalActions: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 8,
-    gap: 12,
+    gap: 11,
   },
   modalButton: {
     flex: 1,
